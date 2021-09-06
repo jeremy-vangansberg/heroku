@@ -1,11 +1,1 @@
-# heroku-model
-# heroku-model
-# app-heroku
-# app-heroku
-# app-heroku
-# app-jv
-# app-jv
-# app-jv
-# app-jv
-# heroku
 # heroku
