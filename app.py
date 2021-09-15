@@ -74,7 +74,7 @@ with result_ml :
         st.markdown("<p style=color:Green;font-weight:bold> Votre crédit est accepté</p>" , unsafe_allow_html=True)
     else :
         st.markdown("<p style=color:Red;font-weight:bold> Votre crédit est refusé</p>" , unsafe_allow_html=True)
-    st.write('Votre crédit est accepté si ce score est supérieur à 0.66 : {}'.format(per_pos))
+    st.write('Votre crédit est accepté si ce score est supérieur à 0.66 : {}'.format(round(per_pos,3)))
 
 # Les variables les plus importantes dans la modélisation
 with feature_imp :
