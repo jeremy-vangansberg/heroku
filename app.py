@@ -17,6 +17,9 @@ result_ml = st.container()
 info_client = st.container()
 info_comp = st.container()
 feature_imp = st.container()
+filtered_dataset = st.container()
+
+st.sidebar.header('Sélection du numéro client')
 
 id_client = st.sidebar.text_input('Identifiant client', value="174545",max_chars=6)
 
@@ -76,3 +79,21 @@ with feature_imp :
     df_neg = df_feat_imp.loc[df_feat_imp.index == int(id_client)][var_neg].transpose()
     st.write(df_pos)
     st.write(df_neg)
+
+with filtered_dataset :
+    st.title('''Explorateur du jeu de données''')
+    is_check = st.checkbox("Affichage des données")
+    st.sidebar.header('Explorateur du jeu de données')
+    columns_display = st.sidebar.multiselect("Variables à afficher", df_model.columns)
+    columns_display = list(columns_display)
+
+    columns_filter = st.sidebar.multiselect("Variable à filtrer", df_model.columns)
+    columns_filter = list(columns_filter)
+    
+    min_max = st.checkbox("Ordre croissant")
+
+    if is_check & min_max :
+        st.write(df_model[columns_display].sort_values(by=columns_filter, ascending=True))
+
+    elif is_check :
+        st.write(df_model[columns_display].sort_values(by=columns_filter, ascending=False))
