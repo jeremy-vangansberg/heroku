@@ -26,7 +26,7 @@ filtered_dataset = st.container()
 
 # Section 1 de la sidebar
 st.sidebar.header('Sélection du numéro client')
-id_client = st.sidebar.text_input('Identifiant client', value="174545",max_chars=6)
+id_client = st.sidebar.selectbox('Identifiant client', df_model.index)
 
 # Affichage du titre et des données relatives au client sélectionné
 with header :
@@ -70,15 +70,15 @@ with info_comp :
 with result_ml :
     st.header('''Résultat de la demande de crédit''')
     per_pos = model.predict_proba(df_model.loc[df_model.index == int(id_client)])[0][1]
-    if per_pos > 0.66 :
+    if per_pos < 0.59 :
         st.markdown("<p style=color:Green;font-weight:bold> Votre crédit est accepté</p>" , unsafe_allow_html=True)
     else :
         st.markdown("<p style=color:Red;font-weight:bold> Votre crédit est refusé</p>" , unsafe_allow_html=True)
-    st.write('Votre crédit est accepté si ce score est supérieur à 0.66 : {}'.format(round(per_pos,3)))
+    st.write('Votre crédit est refusé si ce score est supérieur à 0.59 : {}'.format(round(per_pos,3)))
 
 # Les variables les plus importantes dans la modélisation
 with feature_imp :
-    st.title('''Variables les plus importantes dans le calcul de l'allocation''')
+    st.header('''Variables les plus importantes dans le calcul de l'allocation''')
     var_pos = ['AMT_CREDIT',
        'SUM(previous.AMT_CREDIT)', 'SKEW(previous.CNT_PAYMENT)',
        'STD(previous.RATE_DOWN_PAYMENT)']
@@ -87,10 +87,10 @@ with feature_imp :
         'SKEW(previous.AMT_APPLICATION)', 'SKEW(previous.SELLERPLACE_AREA)']
     
     df_feat_imp = df 
-    st.header('Plus ces valeurs sont hautes, plus vous avez de chances que votre crédit soit accepté')
+    st.subheader('Plus ces valeurs sont hautes, plus vous avez de chances que votre crédit soit **refusé**')
     df_pos = df_feat_imp.loc[df_feat_imp.index == int(id_client)][var_pos].transpose()
     st.write(df_pos)
-    st.header('Plus ces valeurs sont hautes, plus vous avez de chances que votre crédit soit refusé')
+    st.subheader('Plus ces valeurs sont hautes, plus vous avez de chances que votre crédit soit **accepté**')
     df_neg = df_feat_imp.loc[df_feat_imp.index == int(id_client)][var_neg].transpose()
     st.write(df_neg)
 
